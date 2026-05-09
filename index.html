@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mind2Mind - Freelance Expertise Exchange</title>
+    <meta name="description" content="Exchange skills and expertise with professionals worldwide. Mind2Mind connects you with experts for knowledge exchange." />
+    <meta name="theme-color" content="#059669" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png" />
+    <script>
+      // Initialize theme and language from localStorage before React renders
+      (function() {
+        const theme = localStorage.getItem('m2m-theme') || 'light';
+        const lang = localStorage.getItem('m2m-lang') || 'en';
+        
+        // Apply theme
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.style.backgroundColor = '#0f172a';
+          document.body.style.color = '#e2e8f0';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.style.backgroundColor = '#ffffff';
+          document.body.style.color = '#1e293b';
+        }
+        
+        // Apply language
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') {
+          document.body.style.fontFamily = "'Segoe UI', 'Helvetica Neue', sans-serif, 'Arial', 'Droid Arabic Kufi'";
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
