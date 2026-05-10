@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Play, ArrowRight, FileVideo, FileText } from 'lucide-react';
+import { Play, ArrowRight, FileVideo, FileText, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { KnowledgeDemo, Page } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
@@ -13,6 +13,7 @@ export default function FeaturedDemos({ onNavigate }: Props) {
   const { t } = useTheme();
   const [demos, setDemos] = useState<KnowledgeDemo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [processingDemo, setProcessingDemo] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDemos = async () => {
@@ -36,6 +37,31 @@ export default function FeaturedDemos({ onNavigate }: Props) {
   }, []);
 
   const displayDemos = demos.length > 0 ? demos : [];
+
+  const handleDemoClick = async (demo: KnowledgeDemo) => {
+    if (processingDemo) return;
+    
+    setProcessingDemo(demo.id);
+    
+    try {
+      // Simulate processing (2-3 seconds)
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      // Show success message or navigate
+      alert(`Demo "${demo.title}" processed successfully! This would open the demo viewer or upload interface.`);
+      
+      // In a real implementation, you would:
+      // 1. If video: Open video player modal
+      // 2. If PDF: Open PDF viewer
+      // 3. If upload: Show file picker and upload to storage
+      
+    } catch (error) {
+      console.error('Error processing demo:', error);
+      alert('Failed to process demo. Please try again.');
+    } finally {
+      setProcessingDemo(null);
+    }
+  };
 
   if (loading) return null;
   if (displayDemos.length === 0) return null;
@@ -65,8 +91,10 @@ export default function FeaturedDemos({ onNavigate }: Props) {
           {displayDemos.map((demo) => (
             <div
               key={demo.id}
-              className="group bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-              onClick={() => onNavigate('demos-library')}
+              className={`group bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative ${
+                processingDemo === demo.id ? 'opacity-75' : ''
+              }`}
+              onClick={() => handleDemoClick(demo)}
             >
               <div className="relative aspect-video bg-slate-900 overflow-hidden flex items-center justify-center">
                 {demo.file_type === 'video' ? (
@@ -89,6 +117,16 @@ export default function FeaturedDemos({ onNavigate }: Props) {
                   </span>
                 </div>
               </div>
+
+              {/* Loading Overlay */}
+              {processingDemo === demo.id && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                  <div className="bg-white rounded-lg p-3 flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin text-teal-600" />
+                    <span className="text-sm font-medium text-slate-700">Processing...</span>
+                  </div>
+                </div>
+              )}
 
               <div className="p-5">
                 <h3 className="font-bold text-slate-900 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-teal-600 transition-colors">

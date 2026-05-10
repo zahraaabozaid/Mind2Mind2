@@ -25,7 +25,7 @@ export default function ExchangeRequestsPage() {
     setLoading(true);
 
     const { data, error } = await supabase
-      .from('exchanges')
+      .from('exchange_requests')
       .select('*')
       .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
       .order('created_at', { ascending: false });
@@ -71,7 +71,7 @@ export default function ExchangeRequestsPage() {
   const handleAccept = async (exchangeId: string) => {
     setActionLoading(exchangeId);
     try {
-      await supabase.from('exchanges').update({ status: 'accepted', updated_at: new Date().toISOString() }).eq('id', exchangeId);
+      await supabase.from('exchange_requests').update({ status: 'accepted', updated_at: new Date().toISOString() }).eq('id', exchangeId);
 
       // Find the exchange to send notification to the sender
       const exchange = exchanges.find(e => e.id === exchangeId);
@@ -93,7 +93,7 @@ export default function ExchangeRequestsPage() {
     if (!rejectionReason.trim()) return;
     setActionLoading(exchangeId);
     try {
-      await supabase.from('exchanges').update({
+      await supabase.from('exchange_requests').update({
         status: 'rejected',
         rejection_reason: rejectionReason.trim(),
         updated_at: new Date().toISOString(),

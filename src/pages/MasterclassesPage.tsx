@@ -199,13 +199,19 @@ function MasterclassCard({
                   Processing...
                 </>
               ) : soldOut ? (
-                'Sold Out'
+                <>
+                  <Users className="w-4 h-4" />
+                  Sold Out
+                </>
               ) : isPast ? (
-                'Session Ended'
+                <>
+                  <Clock className="w-4 h-4" />
+                  Ended
+                </>
               ) : (
                 <>
-                  <Zap className="w-4 h-4" />
-                  Join / Buy — {formatPrice(masterclass.price_cents)}
+                  <Lock className="w-4 h-4" />
+                  Pay to Enroll (${formatPrice(masterclass.price_cents)})
                 </>
               )}
             </button>
