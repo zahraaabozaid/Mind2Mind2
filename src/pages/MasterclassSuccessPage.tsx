@@ -16,6 +16,7 @@ import {
   fetchMasterclassById,
   formatPrice,
 } from '../lib/masterclass-helpers';
+import { getErrorMessage } from '../lib/supabase';
 
 interface Props {
   // id is passed as "masterclassId|stripeSessionId"
@@ -54,7 +55,7 @@ export default function MasterclassSuccessPage({ masterclassId: rawId, onNavigat
         setConfirmed(!!enrollment);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong verifying your enrollment.');
+      setError(getErrorMessage(err, 'Something went wrong verifying your enrollment.'));
     } finally {
       setLoading(false);
     }

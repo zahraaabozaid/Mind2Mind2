@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Repeat, Send } from 'lucide-react';
 import { Profile } from '../../types';
-import { supabase } from '../../lib/supabase';
+import { supabase, getErrorMessage } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
 
@@ -25,7 +25,7 @@ export default function ExchangeModal({ expert, onClose }: Props) {
     if (user) {
       supabase
         .from('profiles')
-        .select('id')
+        .select('id, display_name')
         .eq('user_id', user.id)
         .maybeSingle()
         .then(({ data }) => {
@@ -52,12 +52,16 @@ export default function ExchangeModal({ expert, onClose }: Props) {
         return;
       }
 
-      // Insert into exchange_requests table with profile IDs
+      // Insert into exchange_requests table with both column-naming conventions
       const { data: exchangeData, error: exchangeErr } = await supabase.from('exchange_requests').insert({
-        requester_profile_id: senderProfile.id,
-        provider_profile_id: expert.id,
+        sender_id: user.id,
+        receiver_id: expert.user_id,
         requester_id: user.id,
         provider_id: expert.user_id,
+        requester_profile_id: senderProfile.id,
+        provider_profile_id: expert.id,
+        skill_offered: mySkill.trim(),
+        skill_requested: theirSkill.trim(),
         requester_skill: mySkill.trim(),
         provider_skill: theirSkill.trim(),
         message: message.trim(),
@@ -81,7 +85,7 @@ export default function ExchangeModal({ expert, onClose }: Props) {
       setSent(true);
     } catch (err: unknown) {
       console.error('Exchange request error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to send request');
+      setError(getErrorMessage(err, 'Failed to send request'));
     } finally {
       setLoading(false);
     }

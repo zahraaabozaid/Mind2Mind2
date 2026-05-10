@@ -18,6 +18,7 @@ import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
 import { Page, AISummaryContent, SessionSummary } from '../types';
 import { fetchSessionSummary, generateSessionSummary } from '../lib/masterclass-helpers';
+import { getErrorMessage } from '../lib/supabase';
 
 interface Props {
   // id format: "sessionId:sessionType:title:topic:expertName:learnerName:duration"
@@ -95,7 +96,7 @@ function GenerateForm({
       });
       onGenerated(result.summary);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to generate summary. Please try again.');
+      setError(getErrorMessage(err, 'Failed to generate summary. Please try again.'));
     } finally {
       setLoading(false);
     }

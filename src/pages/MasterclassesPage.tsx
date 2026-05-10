@@ -22,6 +22,7 @@ import {
   getSpotsRemaining,
   isSoldOut,
 } from '../lib/masterclass-helpers';
+import { getErrorMessage } from '../lib/supabase';
 
 interface Props {
   onNavigate: (page: Page, id?: string) => void;
@@ -298,7 +299,7 @@ export default function MasterclassesPage({ onNavigate, onOpenAuth }: Props) {
       // Redirect to Stripe Checkout
       window.location.href = url;
     } catch (err: unknown) {
-      setCheckoutError(err instanceof Error ? err.message : 'Failed to start checkout. Please try again.');
+      setCheckoutError(getErrorMessage(err, 'Failed to start checkout. Please try again.'));
       setCheckoutLoading(null);
     }
   };

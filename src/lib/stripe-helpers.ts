@@ -32,7 +32,7 @@ function loadStripe(key: string): Promise<StripeInstance | null> {
 
 // Initialize Stripe with your publishable key
 // In production, use environment variables
-const stripePromise = loadStripe('pk_test_5123456789012345678901234'); // Test key
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
 
 export interface StripeCheckoutInput {
   masterclassId: string;

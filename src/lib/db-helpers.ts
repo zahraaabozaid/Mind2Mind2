@@ -23,11 +23,15 @@ export async function createExchangeRequest(
 
   if (!providerProfile) throw new Error('Provider profile not found');
 
-  const { data, error } = await supabase.from('exchanges').insert({
-    requester_profile_id: requesterProfileId,
-    provider_profile_id: providerProfileId,
+  const { data, error } = await supabase.from('exchange_requests').insert({
+    sender_id: user.id,
+    receiver_id: providerProfile.user_id,
     requester_id: user.id,
     provider_id: providerProfile.user_id,
+    requester_profile_id: requesterProfileId,
+    provider_profile_id: providerProfileId,
+    skill_offered: requesterSkill,
+    skill_requested: providerSkill,
     requester_skill: requesterSkill,
     provider_skill: providerSkill,
     message
@@ -52,7 +56,7 @@ export async function updateExchangeStatus(
   status: 'accepted' | 'declined' | 'completed' | 'cancelled'
 ) {
   const { data, error } = await supabase
-    .from('exchanges')
+    .from('exchange_requests')
     .update({ status })
     .eq('id', exchangeId)
     .select()
@@ -95,7 +99,7 @@ export async function sendExchangeMessage(exchangeId: string, message: string) {
 
   // Create notification for other participant
   const { data: exchange } = await supabase
-    .from('exchanges')
+    .from('exchange_requests')
     .select('requester_id, provider_id')
     .eq('id', exchangeId)
     .maybeSingle();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Upload, FileVideo, FileText, Globe, Lock, Plus, Loader2 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { supabase, getErrorMessage } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
 
@@ -140,7 +140,7 @@ export default function DemoUploadModal({ onClose, onUploaded }: Props) {
       }, 1500);
     } catch (err: unknown) {
       console.error('Critical Upload Failure:', err);
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred during upload');
+      setError(getErrorMessage(err, 'An unexpected error occurred during upload'));
     } finally {
       setUploading(false);
     }
