@@ -4,9 +4,31 @@
  * Stripe integration for masterclass payments
  */
 
-import { loadStripe } from '@stripe/stripe-js';
 import { supabase } from './supabase';
-import { Masterclass, MasterclassEnrollment } from '../types';
+import { MasterclassEnrollment } from '../types';
+
+interface StripeInstance {
+  redirectToCheckout: (opts: { sessionId: string }) => Promise<{ error?: { message: string } }>;
+}
+
+function loadStripe(key: string): Promise<StripeInstance | null> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') { resolve(null); return; }
+    const existing = document.querySelector<HTMLScriptElement>('script[src="https://js.stripe.com/v3/"]');
+    const init = () => {
+      const w = window as unknown as Record<string, unknown>;
+      if (typeof w.Stripe === 'function') {
+        resolve((w.Stripe as (k: string) => StripeInstance)(key));
+      } else { resolve(null); }
+    };
+    if (existing) { init(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://js.stripe.com/v3/';
+    s.onload = init;
+    s.onerror = () => resolve(null);
+    document.head.appendChild(s);
+  });
+}
 
 // Initialize Stripe with your publishable key
 // In production, use environment variables

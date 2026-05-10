@@ -95,9 +95,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       return { error: null };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Sign up error:', err);
-      return { error: err as Error };
+      return { error: err instanceof Error ? err : new Error(String(err)) };
     }
   };
 
@@ -123,8 +123,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Admin authenticated successfully
             return { error: null };
           }
-        } catch (adminAuthError) {
-          console.log('Admin Supabase auth skipped or failed, using session-based admin auth');
+        } catch (e) {
+          console.log('Admin Supabase auth skipped or failed, using session-based admin auth', e);
         }
         
         // Return success for admin even if Supabase auth fails
@@ -176,9 +176,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       return { error: null };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Sign in error:', err);
-      return { error: err as Error };
+      return { error: err instanceof Error ? err : new Error(String(err)) };
     }
   };
 

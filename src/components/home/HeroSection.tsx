@@ -18,7 +18,7 @@ export default function HeroSection({ onNavigate, onOpenAuth }: HeroProps) {
   const [exchangeCount, setExchangeCount] = useState(0);
   const [skillCount, setSkillCount] = useState(0);
   const [countryCount, setCountryCount] = useState(0);
-  const [activeExperts, setActiveExperts] = useState<any[]>([]);
+  const [activeExperts, setActiveExperts] = useState<{ name: string; teaching: string; learning: string; avatar: string; verified: boolean }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

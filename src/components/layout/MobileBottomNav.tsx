@@ -1,4 +1,3 @@
-import React from 'react';
 import { Home, Compass, ArrowLeftRight, MessageCircle, User } from 'lucide-react';
 import { Page } from '../../types';
 
@@ -12,7 +11,6 @@ interface MobileBottomNavProps {
 export default function MobileBottomNav({
   currentPage,
   onNavigate,
-  onOpenAuth,
   hasUnreadMessages = false,
 }: MobileBottomNavProps) {
   const navItems = [

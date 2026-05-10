@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Zap, ArrowRight, Star } from 'lucide-react';
 import { Profile, Page } from '../../types';
 import { RecommendationEngine } from '../../lib/recommendation-engine';
@@ -17,11 +17,10 @@ export default function RecommendedProfiles({
   userProfile,
   allProfiles,
   onNavigate,
-  onOpenAuth,
   title = 'Recommended for You',
   limit = 4,
 }: RecommendedProfilesProps) {
-  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<{ profile: Profile; score: number; reason: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -113,7 +112,7 @@ export default function RecommendedProfiles({
 
                 {/* Reason */}
                 <p className="text-xs text-teal-600 bg-teal-50 px-2 py-1.5 rounded-lg mb-4 line-clamp-2">
-                  {t(rec.reason)}
+                  {rec.reason}
                 </p>
 
                 {/* Skills */}

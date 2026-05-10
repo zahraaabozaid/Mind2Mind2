@@ -7,7 +7,7 @@ interface Props {
   onOpenAuth: (mode: 'signin' | 'signup') => void;
 }
 
-export default function WelcomePage({ onNavigate, onOpenAuth }: Props) {
+export default function WelcomePage({ onOpenAuth }: Props) {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
       {/* Hero Section */}

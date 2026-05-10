@@ -26,7 +26,6 @@ export interface Profile {
   member_since: string;
   created_at: string;
   updated_at?: string;
-  category?: string;
 }
 
 export interface Demo {
@@ -205,7 +204,7 @@ export interface UserActivityLog {
   id: string;
   user_id: string;
   action: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   ip_address: string;
   user_agent: string;
   created_at: string;

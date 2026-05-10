@@ -94,8 +94,8 @@ function GenerateForm({
         sessionNotes: form.sessionNotes,
       });
       onGenerated(result.summary);
-    } catch (err: any) {
-      setError(err.message || 'Failed to generate summary. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to generate summary. Please try again.');
     } finally {
       setLoading(false);
     }

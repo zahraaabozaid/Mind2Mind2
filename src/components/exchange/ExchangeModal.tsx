@@ -18,7 +18,7 @@ export default function ExchangeModal({ expert, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
-  const [senderProfile, setSenderProfile] = useState<any>(null);
+  const [senderProfile, setSenderProfile] = useState<{ id: string; display_name?: string } | null>(null);
 
   // Fetch sender's profile
   useEffect(() => {
@@ -79,9 +79,9 @@ export default function ExchangeModal({ expert, onClose }: Props) {
       }
 
       setSent(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Exchange request error:', err);
-      setError(err.message || 'Failed to send request');
+      setError(err instanceof Error ? err.message : 'Failed to send request');
     } finally {
       setLoading(false);
     }

@@ -73,7 +73,7 @@ const navItems = [
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ message, onDone }: { message: string; onDone: () => void }) {
-  useEffect(() => { const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }, []);
+  useEffect(() => { const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }, [onDone]);
   return (
     <div className="fixed bottom-6 right-6 z-[100] bg-slate-900 dark:bg-slate-700 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce-once">
       <CheckCircle className="w-4 h-4 text-teal-400" />
@@ -84,7 +84,7 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
 function StatCard({ icon: Icon, label, value, change, trend, color = 'teal' }: {
-  icon: any;
+  icon: typeof BarChart3;
   label: string;
   value: string | number;
   change?: number;

@@ -53,8 +53,8 @@ export default function MasterclassSuccessPage({ masterclassId: rawId, onNavigat
         const enrollment = await confirmEnrollmentBySession(stripeSessionId, mcId, user.id);
         setConfirmed(!!enrollment);
       }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong verifying your enrollment.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong verifying your enrollment.');
     } finally {
       setLoading(false);
     }

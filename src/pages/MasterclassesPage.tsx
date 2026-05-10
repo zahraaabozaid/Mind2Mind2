@@ -12,7 +12,6 @@ import {
   BookOpen, Video, Tag
 } from 'lucide-react';
 import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
 import { useAuth } from '../context/AuthContext';
 import { Masterclass, Page } from '../types';
 import {
@@ -135,7 +134,7 @@ function MasterclassCard({
               )}
             </span>
           </div>
-          {masterclass.expert_profile?.rating > 0 && (
+          {masterclass.expert_profile && masterclass.expert_profile.rating > 0 && (
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 flex-shrink-0" />
               <span>
@@ -298,8 +297,8 @@ export default function MasterclassesPage({ onNavigate, onOpenAuth }: Props) {
       const { url } = await initiateCheckout(masterclass.id, user.id);
       // Redirect to Stripe Checkout
       window.location.href = url;
-    } catch (err: any) {
-      setCheckoutError(err.message || 'Failed to start checkout. Please try again.');
+    } catch (err: unknown) {
+      setCheckoutError(err instanceof Error ? err.message : 'Failed to start checkout. Please try again.');
       setCheckoutLoading(null);
     }
   };

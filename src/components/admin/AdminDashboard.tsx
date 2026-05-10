@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BarChart3, Users, TrendingUp, Activity, Award, DollarSign, ChevronDown, Filter, Download } from 'lucide-react';
+import { useState } from 'react';
+import { BarChart3, Users, TrendingUp, Activity, Award, DollarSign, Filter, Download } from 'lucide-react';
 import { AdminStats } from '../../types';
 
 interface AdminDashboardProps {
@@ -8,7 +8,6 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ stats }: AdminDashboardProps) {
   const [dateRange, setDateRange] = useState('week');
-  const [selectedMetric, setSelectedMetric] = useState<'users' | 'exchanges' | 'revenue'>('users');
 
   // Mock stats
   const mockStats: AdminStats = stats || {
@@ -22,7 +21,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
     verified_users_count: 8932,
   };
 
-  const StatCard = ({ icon: Icon, label, value, change, trend }: any) => (
+  const StatCard = ({ icon: Icon, label, value, change, trend }: { icon: typeof BarChart3; label: string; value: number; change?: number; trend?: 'up' | 'down' }) => (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 md:p-6">
       <div className="flex items-start justify-between mb-4">
         <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center">
