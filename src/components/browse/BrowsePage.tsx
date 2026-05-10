@@ -40,7 +40,7 @@ export default function BrowsePage({ onNavigate, onOpenAuth }: Props) {
         }
 
         // Fetch Experts
-        let query = supabase
+        const query = supabase
           .from('profiles')
           .select('*')
           .eq('is_demo', false) // Exclude demo profiles

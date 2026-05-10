@@ -9,7 +9,7 @@ import { KnowledgeDemo } from '../types';
  */
 export async function fetchProfileDemos(
   userId: string,
-  currentUserId?: string,
+  _currentUserId?: string,
   limit: number = 50
 ): Promise<KnowledgeDemo[]> {
   try {
@@ -52,7 +52,7 @@ export async function canViewDemo(
  * @param limit - Maximum number of demos to fetch
  */
 export async function fetchAccessibleDemos(
-  userId: string,
+  _userId: string,
   limit: number = 50
 ): Promise<KnowledgeDemo[]> {
   try {
@@ -98,9 +98,9 @@ export async function toggleDemoLike(
       await supabase.from('demo_likes').insert({ demo_id: demoId, user_id: userId });
       return { liked: true };
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error toggling demo like:', error);
-    return { liked: false, error: error.message };
+    return { liked: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }
 
@@ -116,7 +116,8 @@ export async function hasUserLikedDemo(
       .eq('user_id', userId)
       .maybeSingle();
     return !!data;
-  } catch (error) {
+  } catch (e) {
+    console.error('Error checking demo like:', e);
     return false;
   }
 }

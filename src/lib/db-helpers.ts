@@ -305,7 +305,7 @@ export async function deleteNotification(notificationId: string) {
 // USER PREFERENCES OPERATIONS
 // ============================================================================
 
-export async function updateUserPreferences(updates: any) {
+export async function updateUserPreferences(updates: Record<string, unknown>) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
 
@@ -327,7 +327,7 @@ export async function updateUserPreferences(updates: any) {
 // ACTIVITY LOGGING
 // ============================================================================
 
-export async function logActivity(action: string, details?: Record<string, any>) {
+export async function logActivity(action: string, details?: Record<string, unknown>) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 

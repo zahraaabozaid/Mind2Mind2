@@ -15,7 +15,7 @@ export default function ProfileEditModal({ onClose, onSaved }: Props) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
     const fetchCats = async () => {
@@ -198,8 +198,8 @@ export default function ProfileEditModal({ onClose, onSaved }: Props) {
         onSaved();
         onClose();
       }, 1000);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save profile');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to save profile');
     } finally {
       setSaving(false);
     }

@@ -130,8 +130,8 @@ export default function CreateMasterclassPage({ onNavigate, onOpenAuth }: Props)
       });
 
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to create masterclass. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create masterclass. Please try again.');
     } finally {
       setLoading(false);
     }

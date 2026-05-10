@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, Search, Lock, Globe, User, Clock, Heart, Eye, FileText, FileVideo, Plus } from 'lucide-react';
+import { Play, Search, Lock, FileText, FileVideo, Plus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { fetchAccessibleDemos } from '../lib/demo-helpers';
 import { KnowledgeDemo, Page } from '../types';
@@ -11,7 +11,7 @@ interface Props {
   onOpenAuth: (mode: 'signin' | 'signup') => void;
 }
 
-export default function DemosLibraryPage({ onNavigate, onOpenAuth }: Props) {
+export default function DemosLibraryPage({ onOpenAuth }: Props) {
   const { user } = useAuth();
   const [demos, setDemos] = useState<KnowledgeDemo[]>([]);
   const [loading, setLoading] = useState(true);

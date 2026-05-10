@@ -3,7 +3,7 @@ import { X, ChevronDown } from 'lucide-react';
 
 interface FilterPanelProps {
   onClose?: () => void;
-  onApply: (filters: any) => void;
+  onApply: (filters: Record<string, unknown>) => void;
   isMobile?: boolean;
 }
 

@@ -21,7 +21,8 @@ interface BlogPageProps {
   onNavigate: (page: Page) => void;
 }
 
-export default function BlogPage({ onNavigate }: BlogPageProps) {
+export default function BlogPage(props: BlogPageProps) {
+  void props;
   const { t } = useTheme();
   const [activeCategory, setActiveCategory] = useState('All');
   const categories = ['All', ...Array.from(new Set(mockPosts.map(p => p.category)))];

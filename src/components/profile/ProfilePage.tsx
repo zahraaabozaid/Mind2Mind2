@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Star, MapPin, Video, Repeat, Globe, Clock, Play, Eye, Heart, ArrowLeft, MessageCircle, Edit, FileVideo, FileText, Lock } from 'lucide-react';
+import { Star, MapPin, Video, Repeat, Globe, Clock, Play, ArrowLeft, MessageCircle, Edit, FileVideo, FileText, Lock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Profile, KnowledgeDemo, Page } from '../../types';
 import { fetchProfileDemos } from '../../lib/demo-helpers';
@@ -11,7 +11,7 @@ import { useAuth } from '../../context/AuthContext';
 import { toggleFollow, getFollowStatus } from '../../lib/follow-helpers';
 import { createNotification } from '../../lib/notification-helpers';
 import DemoUploadModal from './DemoUploadModal';
-import { Shield, Upload, Info } from 'lucide-react';
+import { Upload } from 'lucide-react';
 
 interface Props {
   profileId?: string;
@@ -21,24 +21,11 @@ interface Props {
 
 
 
-
-
-function formatDuration(seconds: number) {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
-}
-
-function formatNum(n: number) {
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-  return n.toString();
-}
-
 export default function ProfilePage({ profileId, onNavigate, onOpenAuth }: Props) {
   const { user } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [demos, setDemos] = useState<KnowledgeDemo[]>([]);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<{ id: string; rating: number; comment: string; reviewer_id: string; created_at: string; profiles?: { display_name: string; avatar_url: string } | { display_name: string; avatar_url: string }[] }[]>([]);
   const [activeTab, setActiveTab] = useState<'demos' | 'reviews' | 'about'>('demos');
   const [exchangeOpen, setExchangeOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -453,7 +440,8 @@ export default function ProfilePage({ profileId, onNavigate, onOpenAuth }: Props
           <div className="space-y-4 mb-12">
             {reviews.length > 0 ? (
               reviews.map((review) => {
-                const reviewerProfile = review.profiles;
+                const rawProfile = review.profiles;
+                const reviewerProfile = Array.isArray(rawProfile) ? rawProfile[0] : rawProfile;
                 return (
                   <div key={review.id} className="bg-white border border-slate-100 rounded-2xl p-5">
                     <div className="flex items-start gap-4">

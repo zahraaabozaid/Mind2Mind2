@@ -25,7 +25,7 @@ export default function DemoUploadModal({ onClose, onUploaded }: Props) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('Technology');
 
   useEffect(() => {
@@ -78,14 +78,11 @@ export default function DemoUploadModal({ onClose, onUploaded }: Props) {
     setUploading(true);
     setUploadProgress(10);
 
-    let uploadedPath = '';
-
     try {
       // 1. Prepare Path & Filename
       const timestamp = Date.now();
       const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
       const storagePath = `${user.id}/${timestamp}_${cleanFileName}`;
-      uploadedPath = storagePath;
       
       console.log("Starting upload to path:", storagePath);
       setUploadProgress(30);
@@ -141,9 +138,9 @@ export default function DemoUploadModal({ onClose, onUploaded }: Props) {
         onUploaded(insertData?.[0]);
         onClose();
       }, 1500);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Critical Upload Failure:', err);
-      setError(err.message || 'An unexpected error occurred during upload');
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred during upload');
     } finally {
       setUploading(false);
     }

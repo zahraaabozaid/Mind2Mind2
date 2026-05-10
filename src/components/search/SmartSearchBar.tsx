@@ -95,7 +95,7 @@ export default function SmartSearchBar({
     setShowSuggestions(false);
   };
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilterChange = (key: keyof SearchFilters, value: string | number) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onSearch(newFilters);
