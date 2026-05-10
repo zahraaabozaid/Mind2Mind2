@@ -52,12 +52,16 @@ export default function ExchangeModal({ expert, onClose }: Props) {
         return;
       }
 
-      // Insert into exchange_requests table with profile IDs
+      // Insert into exchange_requests table with both column-naming conventions
       const { data: exchangeData, error: exchangeErr } = await supabase.from('exchange_requests').insert({
-        requester_profile_id: senderProfile.id,
-        provider_profile_id: expert.id,
+        sender_id: user.id,
+        receiver_id: expert.user_id,
         requester_id: user.id,
         provider_id: expert.user_id,
+        requester_profile_id: senderProfile.id,
+        provider_profile_id: expert.id,
+        skill_offered: mySkill.trim(),
+        skill_requested: theirSkill.trim(),
         requester_skill: mySkill.trim(),
         provider_skill: theirSkill.trim(),
         message: message.trim(),

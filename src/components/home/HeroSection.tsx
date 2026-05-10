@@ -26,7 +26,7 @@ export default function HeroSection({ onNavigate, onOpenAuth }: HeroProps) {
       try {
         // Fetch total exchanges count
         const { count } = await supabase
-          .from('exchanges')
+          .from('exchange_requests')
           .select('*', { count: 'exact', head: true });
         
         if (count) setExchangeCount(count);
