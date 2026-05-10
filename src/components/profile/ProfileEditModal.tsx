@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Camera, Save, Loader2, CheckCircle2, Video } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { supabase, getErrorMessage } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { Profile, ProfileCategory } from '../../types';
 import { getProfileCategories } from '../../lib/db-helpers';
@@ -199,7 +199,7 @@ export default function ProfileEditModal({ onClose, onSaved }: Props) {
         onClose();
       }, 1000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to save profile');
+      setError(getErrorMessage(err, 'Failed to save profile'));
     } finally {
       setSaving(false);
     }

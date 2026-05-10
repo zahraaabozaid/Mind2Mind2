@@ -20,3 +20,12 @@ export const supabase = createClient(
 
 // Export validation status for use in components
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
+
+/** Extract a human-readable message from any thrown value (Error, PostgrestError, etc.) */
+export function getErrorMessage(err: unknown, fallback = 'Something went wrong'): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === 'object' && err !== null && 'message' in err) {
+    return String((err as { message: unknown }).message);
+  }
+  return fallback;
+}

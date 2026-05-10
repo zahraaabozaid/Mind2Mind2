@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Repeat, Send } from 'lucide-react';
 import { Profile } from '../../types';
-import { supabase } from '../../lib/supabase';
+import { supabase, getErrorMessage } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
 
@@ -25,7 +25,7 @@ export default function ExchangeModal({ expert, onClose }: Props) {
     if (user) {
       supabase
         .from('profiles')
-        .select('id')
+        .select('id, display_name')
         .eq('user_id', user.id)
         .maybeSingle()
         .then(({ data }) => {
@@ -81,7 +81,7 @@ export default function ExchangeModal({ expert, onClose }: Props) {
       setSent(true);
     } catch (err: unknown) {
       console.error('Exchange request error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to send request');
+      setError(getErrorMessage(err, 'Failed to send request'));
     } finally {
       setLoading(false);
     }

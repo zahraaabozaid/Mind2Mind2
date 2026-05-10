@@ -15,6 +15,7 @@ import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
 import { Page } from '../types';
 import { createMasterclass } from '../lib/masterclass-helpers';
+import { getErrorMessage } from '../lib/supabase';
 
 interface Props {
   onNavigate: (page: Page, id?: string) => void;
@@ -131,7 +132,7 @@ export default function CreateMasterclassPage({ onNavigate, onOpenAuth }: Props)
 
       setSuccess(true);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create masterclass. Please try again.');
+      setError(getErrorMessage(err, 'Failed to create masterclass. Please try again.'));
     } finally {
       setLoading(false);
     }
